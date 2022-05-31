@@ -27,12 +27,14 @@ class RentalListings:
       else:
         self.links.append(link)
 
-    all_prices = [price.getText() for price in soup.select('li .list-card-price')]
+    all_prices = [price.getText() for price in soup.select('li .list-card-heading')]
     for price in all_prices:
-      if '+' in price:
-        self.prices.append(price.split('+')[0])
-      elif '/' in price:
-        self.prices.append(price.split('/')[0])
+      try:
+        price = price.select('.list-card-price')[0].contents[0]
+      except IndexError:
+        price = price.select('.list-card-details li')[0].contents[0]
+      finally:
+        self.prices.append(price)
 
     all_addresses = [address.getText() for address in soup.select('li .list-card-addr')]
     for address in all_addresses:
@@ -43,24 +45,17 @@ class RentalListings:
   
 
   def fill_form(self, form):
-    self.driver.get(form)
-    time.sleep(5)
     for i in range(len(self.addresses) - 1):
-      try:
-        address_input = self.driver.find_element_by_xpath('//*[@id="mG61Hd"]/div[2]/div/div[2]/div[1]/div/div/div[2]/div/div[1]/div/div[1]/input')
-        address_input.send_keys(self.addresses[i])
-        price_input = self.driver.find_element_by_xpath('//*[@id="mG61Hd"]/div[2]/div/div[2]/div[2]/div/div/div[2]/div/div[1]/div/div[1]/input')
-        price_input.send_keys(self.prices[i])
-        link_input = self.driver.find_element_by_xpath('//*[@id="mG61Hd"]/div[2]/div/div[2]/div[3]/div/div/div[2]/div/div[1]/div/div[1]/input')
-        link_input.send_keys(self.links[i])
-        submit = self.driver.find_element_by_xpath('//*[@id="mG61Hd"]/div[2]/div/div[3]/div[1]/div[1]/div')
-        submit.click()
-        time.sleep(5)
-        resubmit = self.driver.find_element_by_link_text('Submit another response')
-        resubmit.click()
-        time.sleep(5)
-      except IndexError:
-        break
+      self.driver.get(form)
+      time.sleep(5)
+      address_input = self.driver.find_element_by_xpath('//*[@id="mG61Hd"]/div[2]/div/div[2]/div[1]/div/div/div[2]/div/div[1]/div/div[1]/input')
+      address_input.send_keys(self.addresses[i])
+      price_input = self.driver.find_element_by_xpath('//*[@id="mG61Hd"]/div[2]/div/div[2]/div[2]/div/div/div[2]/div/div[1]/div/div[1]/input')
+      price_input.send_keys(self.prices[i])
+      link_input = self.driver.find_element_by_xpath('//*[@id="mG61Hd"]/div[2]/div/div[2]/div[3]/div/div/div[2]/div/div[1]/div/div[1]/input')
+      link_input.send_keys(self.links[i])
+      submit = self.driver.find_element_by_xpath('//*[@id="mG61Hd"]/div[2]/div/div[3]/div[1]/div[1]/div')
+      submit.click()
 
 
 bot = RentalListings()
