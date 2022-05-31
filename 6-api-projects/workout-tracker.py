@@ -1,14 +1,14 @@
 import requests, os
 from datetime import datetime as dt
-APP_ID = os.environ('APP_ID')
-API_KEY = os.environ('API_KEY')
+APP_ID = os.environ.get('APP_ID')
+API_KEY = os.environ.get('API_KEY')
 GENDER = 'F'
 WEIGHT = '50'
 HEIGHT = '170'
 AGE = 30
-SHEET_ENDPOINT = os.environ('SHEET_ENDPOINT')
-USERNAME = os.environ('USERNAME')
-PASSWORD = os.environ('PASSWORD')
+SHEET_ENDPOINT = os.environ.get('SHEET_ENDPOINT')
+USERNAME = os.environ.get('USERNAME')
+PASSWORD = os.environ.get('PASSWORD')
 
 # FETCH EXERCISE STATS
 headers = {

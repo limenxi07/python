@@ -3,8 +3,8 @@ from bs4 import BeautifulSoup
 PRODUCT_URL = 'https://www.amazon.com/dp/B0863TXGM3?ref_=cm_sw_r_cp_ud_dp_D3A277PAJEA3B0E5JS99'
 PRODUCT_NAME = 'Sony Headphones'
 PRICE_THRESHOLD = '300'
-EMAIL = os.environ("EMAIL")
-EMAIL_PASSWORD = os.environ("EMAIL_PASSWORD")
+EMAIL = os.environ.get("EMAIL")
+EMAIL_PASSWORD = os.environ.get("EMAIL_PASSWORD")
 
 # obtain regular price
 response = requests.get(PRODUCT_URL, headers={

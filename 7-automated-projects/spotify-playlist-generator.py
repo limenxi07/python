@@ -2,8 +2,8 @@ import requests, os, spotipy
 from spotipy.oauth2 import SpotifyOAuth
 from bs4 import BeautifulSoup
 DATE = '2000-08-12'
-CLIENT_ID = os.environ('CLIENT_ID')
-CLIENT_SECRET = os.environ('CLIENT_SECRET')
+CLIENT_ID = os.environ.get('CLIENT_ID')
+CLIENT_SECRET = os.environ.get('CLIENT_SECRET')
 
 # obtain list of titles
 response = requests.get(f'https://www.billboard.com/charts/hot-100/{DATE}/')

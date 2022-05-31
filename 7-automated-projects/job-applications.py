@@ -2,9 +2,9 @@ from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.common.exceptions import NoSuchElementException
 import os, time
-USERNAME = os.environ('USERNAME')
-PASSWORD = os.environ('PASSWORD')
-PHONE = os.environ('PHONE')
+USERNAME = os.environ.get('USERNAME')
+PASSWORD = os.environ.get('PASSWORD')
+PHONE = os.environ.get('PHONE')
 
 CHROMEDRIVER = '/Users/limenxi/Documents/vscode/chromedriver'
 driver = webdriver.Chrome(executable_path=CHROMEDRIVER)

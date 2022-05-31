@@ -2,8 +2,8 @@ from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.common.exceptions import ElementClickInterceptedException
 import os, time
-USERNAME = os.environ('USERNAME')
-PASSWORD = os.environ('PASSWORD')
+USERNAME = os.environ.get('USERNAME')
+PASSWORD = os.environ.get('PASSWORD')
 TARGET_ACCOUNT = 'chefsteps'
 CHROMEDRIVER = '/Users/limenxi/Documents/vscode/chromedriver'
 
