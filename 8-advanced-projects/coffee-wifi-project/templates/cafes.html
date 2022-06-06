@@ -7,17 +7,42 @@
 <div class="container">
   <div class="row">
     <div class="col-sm-12">
-
       <h1>All Cafes</h1>
-
-	  <table class="table">
-          <!-- This is where you will write the code to render a Bootstrap 
-          Table that contains all the information from the 
-          cafe-data.csv file. -->
+	    <table class="table">
+        {% for cafe in cafes %}
+          {% if cafe[0] == 'Cafe Name' %}
+            <thead>
+              <tr>
+                <th scope="col">{{ cafe[0] }}</th>
+                <th scope="col">{{ cafe[1] }}</th>
+                <th scope="col">{{ cafe[2] }}</th>
+                <th scope="col">{{ cafe[3] }}</th>
+                <th scope="col">{{ cafe[4] }}</th>
+                <th scope="col">{{ cafe[5] }}</th>
+                <th scope="col">{{ cafe[6] }}</th>
+              </tr>
+            </thead>
+          {% else %}
+            {{ pass }}
+          {% endif %}
+          <tbody>
+            {% if cafe[0] == 'Cafe Name' %}
+              {{ pass }}
+            {% else %}
+              <tr>
+                <td>{{ cafe[0] }}</td>
+                <td><a href="{{ cafe[1] }}">Maps Link</a></td>
+                <td>{{ cafe[2] }}</td>
+                <td>{{ cafe[3] }}</td>
+                <td>{{ cafe[4] }}</td>
+                <td>{{ cafe[5] }}</td>
+                <td>{{ cafe[6] }}</td>
+              </tr>
+            {% endif %}
+          </tbody>
+        {% endfor %}
   	  </table>
-
       <p><a href="#">Return to index page</a></p>
-
     </div>
   </div>
 </div>
