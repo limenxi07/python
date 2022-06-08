@@ -13,9 +13,8 @@
 {% block content %}
 <div class="container">
   <h1 class="heading">Select Movie</h1>
-  <p>
-    <a href="#"> MOVIE TITLE - MOVIE RELEASE DATE</a>
-  </p>
-
+  {% for title in titles %}
+    <p><a href="{{ url_for('search', id=title['id']) }}"> {{ title['original_title'] }} - {{ title['release_date'] }} </a></p>
+  {% endfor %}
 </div>
 {% endblock %}
