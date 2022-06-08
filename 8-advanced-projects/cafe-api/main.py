@@ -1,15 +1,18 @@
+import random
+
 from flask import Flask, jsonify, render_template, request
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy.sql.expression import func
 
 app = Flask(__name__)
 
-##Connect to Database
+# connect to database
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///cafes.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
 
-##Cafe TABLE Configuration
+# cafe table configuration
 class Cafe(db.Model):
   id = db.Column(db.Integer, primary_key=True)
   name = db.Column(db.String(250), unique=True, nullable=False)
@@ -23,6 +26,9 @@ class Cafe(db.Model):
   can_take_calls = db.Column(db.Boolean, nullable=False)
   coffee_price = db.Column(db.String(250), nullable=True)
 
+  def to_dict(self):
+    return {column.name: getattr(self, column.name) for column in self.__table__.columns}
+
 
 @app.route("/")
 def home():
@@ -30,6 +36,12 @@ def home():
     
 
 ## HTTP GET - Read Record
+@app.route('/random')
+def random():
+  cafe = Cafe.query.order_by(func.random()).first()
+  return jsonify(cafe=cafe.to_dict())
+
+
 
 ## HTTP POST - Create Record
 
