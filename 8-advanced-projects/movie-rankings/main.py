@@ -47,6 +47,10 @@ class AddMovieForm(FlaskForm):
 @app.route("/")
 def home():
   movies = db.session.query(Movie).order_by(sqlalchemy.sql.expression.desc(Movie.rating))
+  i = 1
+  for movie in movies:
+    movie.ranking = i
+    i += 1
   return render_template("index.html", movies=movies)
 
 
