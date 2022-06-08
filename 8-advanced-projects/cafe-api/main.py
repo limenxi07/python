@@ -1,5 +1,4 @@
 import random
-
 from flask import Flask, jsonify, render_template, request
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.sql.expression import func
@@ -41,6 +40,23 @@ def random():
   cafe = Cafe.query.order_by(func.random()).first()
   return jsonify(cafe=cafe.to_dict())
 
+@app.route('/all')
+def all():
+  cafes = [cafe.to_dict() for cafe in Cafe.query.all()]
+  return jsonify(cafes=cafes)
+
+@app.route('/search')
+def search():
+  loc = request.args.get('loc')
+  try:
+    cafes = [cafe.to_dict() for cafe in Cafe.query.filter_by(location=loc)]
+    err = cafes[0]
+    return jsonify(cafes=cafes)
+  except IndexError:
+    error = {
+      "Not found": "Sorry, we don't have a cafe at that location."
+    }
+    return jsonify(error=error)
 
 
 ## HTTP POST - Create Record
