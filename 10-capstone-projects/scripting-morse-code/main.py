@@ -1,6 +1,5 @@
 TEXT_TO_MORSE = {'A': '.-', 'B': '-...', 'C': '-.-.', 'D': '-..', 'E': '.', 'F': '..-.', 'G': '--.', 'H': '....', 'I': '..', 'J': '.---', 'K': '-.-', 'L': '.-..', 'M': '--', 'N': '-.', 'O': '---', 'P': '.--.', 'Q': '--.-', 'R': '.-.', 'S': '...', 'T': '-', 'U': '..-', 'V': '...-', 'W': '.--', 'X': '-..-', 'Y': '-.--', 'Z': '--..', '0': '-----', '1': '.----', '2': '..---', '3': '...--', '4': '....-', '5': '.....', '6': '-....', '7': '--...', '8': '---..', '9': '----.'}
 MORSE_TO_TEXT = {value:key for key, value in TEXT_TO_MORSE.items()}
-cont = True
 
 def operate():
   dirn = True
@@ -34,8 +33,10 @@ def operate():
     else:
       print('Please enter a valid command.')
 
-while cont:
-  operate()
-  cont_boo = input('Would you like to translate another message? (y/n) ')
-  if cont_boo == 'n':
-    cont = False
+if __name__ == '__main__':
+  cont = True
+  while cont:
+    operate()
+    cont_boo = input('Would you like to translate another message? (y/n) ')
+    if cont_boo == 'n':
+      cont = False
