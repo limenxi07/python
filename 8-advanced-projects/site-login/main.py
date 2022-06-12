@@ -1,11 +1,13 @@
-from flask import Flask, render_template, request, url_for, redirect, flash, send_from_directory
-from werkzeug.security import generate_password_hash, check_password_hash
+from flask import (Flask, flash, redirect, render_template, request,
+                   send_from_directory, url_for)
+from flask_login import (LoginManager, UserMixin, current_user, login_required,
+                         login_user, logout_user)
 from flask_sqlalchemy import SQLAlchemy
-from flask_login import UserMixin, login_user, LoginManager, login_required, current_user, logout_user
+from werkzeug.security import check_password_hash, generate_password_hash
 
 app = Flask(__name__)
 
-app.config['SECRET_KEY'] = 'any-secret-key-you-choose'
+app.config['SECRET_KEY'] = 'secret-key-12345'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
@@ -23,9 +25,19 @@ def home():
   return render_template("index.html")
 
 
-@app.route('/register')
+@app.route('/register', methods=["GET", "POST"])
 def register():
-  return render_template("register.html")
+  if request.method == 'POST':
+    new = User(
+      email=request.form['email'], 
+      name=request.form['name'], 
+      password=generate_password_hash(request.form['password'], method='pbkdf2:sha256', salt_length=8)
+    )
+    db.session.add(new)
+    db.session.commit()
+    return redirect(url_for('secrets', name=new.name))
+  else:
+    return render_template("register.html")
 
 
 @app.route('/login')
@@ -35,7 +47,7 @@ def login():
 
 @app.route('/secrets')
 def secrets():
-  return render_template("secrets.html")
+  return render_template("secrets.html", name=request.args.get('name'))
 
 
 @app.route('/logout')
@@ -45,7 +57,7 @@ def logout():
 
 @app.route('/download')
 def download():
-  pass
+  return send_from_directory(directory='static/files', filename='cheat_sheet.pdf')
 
 
 if __name__ == "__main__":
