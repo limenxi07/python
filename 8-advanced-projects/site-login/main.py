@@ -27,46 +27,58 @@ def load_user(user_id):
 
 @app.route('/')
 def home():
-  return render_template("index.html")
+  return render_template("index.html", login=current_user.is_authenticated)
 
 
 @app.route('/register', methods=["GET", "POST"])
 def register():
   if request.method == 'POST':
-    new = User(
-      email=request.form['email'], 
-      name=request.form['name'], 
-      password=generate_password_hash(request.form['password'], method='pbkdf2:sha256', salt_length=8)
-    )
-    db.session.add(new)
-    db.session.commit()
-    login_user(new)
-    return redirect(url_for('secrets'))
+    user = User.query.filter_by(email=request.form['email']).first()
+    if user:
+      flash('An account has already been registered under this email, please log in instead.')
+      return redirect(url_for('login'))
+    else:
+      new = User(
+        email=request.form['email'], 
+        name=request.form['name'], 
+        password=generate_password_hash(request.form['password'], method='pbkdf2:sha256', salt_length=8)
+      )
+      db.session.add(new)
+      db.session.commit()
+      login_user(new)
+      return redirect(url_for('secrets'))
   else:
-    return render_template("register.html")
+    return render_template("register.html", login=current_user.is_authenticated)
 
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
   if request.method == 'POST':
-    user = User.query.get(request.form['email'])
-    if check_password_hash(user.password, request.form['password']):
+    user = User.query.filter_by(email=request.form['email']).first()
+    if not user:
+      flash('A user with that email does not exist, please try again.')
+      return redirect(url_for('login'))
+    elif not check_password_hash(user.password, request.form['password']):
+      flash('Incorrect password, please try again.')
+      return redirect(url_for('login'))
+    else:
       login_user(user)
-      flash('Successful log-in.')
       return redirect(url_for('secrets'))
   else:
-    return render_template("login.html")
+    return render_template("login.html", login=current_user.is_authenticated)
 
 
 @app.route('/secrets')
 @login_required
 def secrets():
-  return render_template("secrets.html", name=current_user.name)
+  return render_template("secrets.html", name=current_user.name, login=True)
 
 
 @app.route('/logout')
+@login_required
 def logout():
-  pass
+  logout_user()
+  return redirect(url_for('home'))
 
 
 @app.route('/download')
