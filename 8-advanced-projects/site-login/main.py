@@ -1,16 +1,16 @@
-from flask import (Flask, flash, redirect, render_template, request,
-                   send_from_directory, url_for)
-from flask_login import (LoginManager, UserMixin, current_user, login_required,
-                         login_user, logout_user)
+from flask import (Flask, flash, redirect, render_template, request, send_from_directory, url_for)
+from flask_login import (LoginManager, UserMixin, current_user, login_required, login_user, logout_user)
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import check_password_hash, generate_password_hash
 
 app = Flask(__name__)
-
 app.config['SECRET_KEY'] = 'secret-key-12345'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
+login_manager = LoginManager()
+login_manager.init_app(app)
+
 
 class User(UserMixin, db.Model):
   id = db.Column(db.Integer, primary_key=True)
@@ -18,6 +18,11 @@ class User(UserMixin, db.Model):
   password = db.Column(db.String(100))
   name = db.Column(db.String(1000))
 db.create_all()
+
+
+@login_manager.user_loader
+def load_user(user_id):
+  return User.query.get(int(user_id))
 
 
 @app.route('/')
@@ -35,19 +40,28 @@ def register():
     )
     db.session.add(new)
     db.session.commit()
-    return redirect(url_for('secrets', name=new.name))
+    login_user(new)
+    return redirect(url_for('secrets'))
   else:
     return render_template("register.html")
 
 
-@app.route('/login')
+@app.route('/login', methods=['GET', 'POST'])
 def login():
-  return render_template("login.html")
+  if request.method == 'POST':
+    user = User.query.get(request.form['email'])
+    if check_password_hash(user.password, request.form['password']):
+      login_user(user)
+      flash('Successful log-in.')
+      return redirect(url_for('secrets'))
+  else:
+    return render_template("login.html")
 
 
 @app.route('/secrets')
+@login_required
 def secrets():
-  return render_template("secrets.html", name=request.args.get('name'))
+  return render_template("secrets.html", name=current_user.name)
 
 
 @app.route('/logout')
@@ -56,6 +70,7 @@ def logout():
 
 
 @app.route('/download')
+@login_required
 def download():
   return send_from_directory(directory='static/files', filename='cheat_sheet.pdf')
 
