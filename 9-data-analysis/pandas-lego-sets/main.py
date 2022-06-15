@@ -23,8 +23,9 @@ for i in range(1, 6):
 
 
 # sets over time analysis
-stt = st.groupby('year', ).count()
+stt = st.groupby('year').count()
 sets = pd.Series(index=stt.index, data=stt['name'])
+plt.figure(0)
 ax1 = plt.gca()
 ax1.plot(sets.index[:-2], sets[:-2], 'g')
 ax1.set_xlabel('Year')
@@ -35,4 +36,11 @@ themes.rename(columns={'theme_id': 'nr_themes'}, inplace=True)
 ax2 = ax1.twinx()
 ax2.plot(themes.index[:-2], themes['nr_themes'][:-2], 'b')
 ax2.set_ylabel('Number of themes', color='blue')
+
+fig2, ax3 = plt.subplots()
+parts = df.groupby('year').agg({'num_parts': pd.Series.mean})
+parts.rename(columns={'num_parts': 'avg_num_parts'}, inplace=True)
+plt.figure(1)
+plt.scatter(parts.index[:-2], parts.avg_num_parts[:-2])
+
 plt.show()
