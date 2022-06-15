@@ -43,4 +43,16 @@ parts.rename(columns={'num_parts': 'avg_num_parts'}, inplace=True)
 plt.figure(1)
 plt.scatter(parts.index[:-2], parts.avg_num_parts[:-2])
 
+
+# relational databases
+th = pd.read_csv('9-data-analysis/pandas-lego-sets/data/themes.csv')
+sets = df['theme_id'].value_counts()
+sets = pd.DataFrame({'id': sets.index, 'set_count': sets.values})
+merged = pd.merge(sets, th, on='id')
+plt.figure(2, figsize=(14, 8))
+plt.xlabel('Theme name')
+plt.ylabel('Number of sets')
+plt.xticks(rotation=45)
+plt.bar(merged.name[:10], merged.set_count[:10])
+
 plt.show()
