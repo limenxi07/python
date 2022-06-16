@@ -20,6 +20,7 @@ df_btc_price = df_btc_price.resample('M', on='DATE').last() # converts daily dat
 
 # DATA VISUALISATION - TESLA
 plt.figure(1, figsize=(14, 8), dpi=120)
+plt.title('Tesla Web Search vs Price', fontsize=18)
 ax1 = plt.gca()
 ax2 = ax1.twinx()
 ax1.set_xlabel('Year', fontsize=14)
@@ -41,6 +42,7 @@ ax1.xaxis.set_major_formatter(years_format)
 
 # DATA VISUALISATION - BITCOIN
 plt.figure(2, figsize=(14, 8), dpi=120)
+plt.title('Bitcoin News Search vs Resampled Price', fontsize=18)
 ax3 = plt.gca()
 ax4 = ax3.twinx()
 ax3.set_xlabel('Year', fontsize=14)
@@ -55,5 +57,25 @@ plt.xticks(fontsize=14, rotation=45)
 ax3.xaxis.set_major_locator(years)
 ax3.xaxis.set_minor_locator(months)
 ax3.xaxis.set_major_formatter(years_format)
+
+
+# DATA VISUALISATION - UNEMPLOYMENT
+plt.figure(3, figsize=(14, 8), dpi=120)
+plt.title('Monthly Search of "Unemployment Benefits" in the U.S. vs the U/E Rate', fontsize=18)
+ax5 = plt.gca()
+ax6 = ax5.twinx()
+ax5.grid(color='grey', linestyle='--')
+ax5.set_xlabel('Year', fontsize=14)
+ax5.set_ylabel('FRED U/E rate', color='purple', fontsize=14)
+ax6.set_ylabel('Search trend', color='skyblue', fontsize=14)
+ax5.set_xlim([df_unemployment.MONTH.min(), df_unemployment.MONTH.max()])
+ax5.set_ylim([3, 10.5])
+ax5.plot(df_unemployment.MONTH, df_unemployment.UNRATE, 'purple', linestyle='--')
+ax6.plot(df_unemployment.MONTH, df_unemployment.UE_BENEFITS_WEB_SEARCH, 'skyblue')
+
+plt.xticks(fontsize=14, rotation=45)
+ax5.xaxis.set_major_locator(years)
+ax5.xaxis.set_minor_locator(months)
+ax5.xaxis.set_major_formatter(years_format)
 
 plt.show()
