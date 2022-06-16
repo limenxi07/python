@@ -18,7 +18,7 @@ df_unemployment.MONTH = pd.to_datetime(df_unemployment.MONTH)
 df_btc_price = df_btc_price.resample('M', on='DATE').last() # converts daily data into monthly data (using the price at month-end)
 
 
-# DATA VISUALISATION
+# DATA VISUALISATION - TESLA
 plt.figure(1, figsize=(14, 8), dpi=120)
 ax1 = plt.gca()
 ax2 = ax1.twinx()
@@ -37,5 +37,23 @@ plt.xticks(fontsize=14, rotation=45)
 ax1.xaxis.set_major_locator(years)
 ax1.xaxis.set_minor_locator(months)
 ax1.xaxis.set_major_formatter(years_format)
+
+
+# DATA VISUALISATION - BITCOIN
+plt.figure(2, figsize=(14, 8), dpi=120)
+ax3 = plt.gca()
+ax4 = ax3.twinx()
+ax3.set_xlabel('Year', fontsize=14)
+ax3.set_ylabel('BTC price', color='orange', fontsize=14)
+ax4.set_ylabel('Search trend', color='skyblue', fontsize=14)
+ax3.set_xlim([df_btc_price.index.min(), df_btc_price.index.max()])
+ax3.set_ylim([0, 15000])
+ax3.plot(df_btc_price.index, df_btc_price.CLOSE, 'orange', linestyle='--')
+ax4.plot(df_btc_price.index, df_btc_search.BTC_NEWS_SEARCH, 'skyblue', marker='o')
+
+plt.xticks(fontsize=14, rotation=45)
+ax3.xaxis.set_major_locator(years)
+ax3.xaxis.set_minor_locator(months)
+ax3.xaxis.set_major_formatter(years_format)
 
 plt.show()
