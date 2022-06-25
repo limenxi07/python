@@ -4,14 +4,13 @@ def add_time(start, duration, day=None):
   hour = int(start.split(':')[0]) + int(duration.split(':')[0])
   min = int(start.split(':')[1][:2]) + int(duration.split(':')[1][:2])
   counter = start.split(' ')[1]
-  
-  
+
   # calculations
   while min > 59:
     min = min - 60
     hour += 1
   
-  while hour > 12:
+  while hour > 11:
     hour -= 12
     if counter == 'AM':
       counter = 'PM'
@@ -20,28 +19,29 @@ def add_time(start, duration, day=None):
       days += 1
 
   if day:
-    day_index = DAYS.index(day.capitalize())
-
+    day_index = DAYS.index(day.capitalize()) + days
+    while day_index > 6:
+      day_index -= 7
+    day = DAYS[day_index]
+    
 
   # output formatting
   if min < 10:
     min = '0' + str(min)
-  if hour == 12:
-    if counter == 'AM':
-      counter = 'PM'
-    else:
-      counter = 'AM'
+  if hour == 0:
+    hour = '12'
 
   if day is None:
     return f'{hour}:{min} {counter}'
-  if days == 1:
-    return 'next day'
-  if days > 0:
-    return 'more days'
+  elif days == 0:
+    return f'{hour}:{min} {counter}, {day}'
+  elif days > 0 and days != 1:
+    return f'{hour}:{min} {counter}, {day} ({days} days later)'
+  elif days == 1:
+    return f'{hour}:{min} {counter} (next day)'
 
 
-print(add_time("3:00 PM", "3:10"))
-
+print(add_time("10:10 PM", "3:30"))
 
 import unittest
 class UnitTests(unittest.TestCase):
