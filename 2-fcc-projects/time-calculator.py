@@ -1,28 +1,46 @@
 def add_time(start, duration, day=None):
-  out = []
   DAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
   days = 0
-
-  # formatting inputs
-  start_hour = int(start.split(':')[0])
-  start_min = int(start.split(':')[1])
-  dur_hour = int(duration.split(':')[0])
-  dur_min = int(duration.split(':')[1])
+  hour = int(start.split(':')[0]) + int(duration.split(':')[0])
+  min = int(start.split(':')[1][:2]) + int(duration.split(':')[1][:2])
   counter = start.split(' ')[1]
   
+  
   # calculations
+  while min > 59:
+    min = min - 60
+    hour += 1
+  
+  while hour > 12:
+    hour -= 12
+    if counter == 'AM':
+      counter = 'PM'
+    else:
+      counter = 'AM'
+      days += 1
 
-
-  # calculations with day
   if day:
     day_index = DAYS.index(day.capitalize())
+
+
+  # output formatting
+  if min < 10:
+    min = '0' + str(min)
+  if hour == 12:
+    if counter == 'AM':
+      counter = 'PM'
+    else:
+      counter = 'AM'
+
+  if day is None:
+    return f'{hour}:{min} {counter}'
   if days == 1:
-    pass
+    return 'next day'
   if days > 0:
-    pass
+    return 'more days'
 
-  return out.join('')
 
+print(add_time("3:00 PM", "3:10"))
 
 
 import unittest
@@ -88,5 +106,5 @@ class UnitTests(unittest.TestCase):
       expected = "6:18 AM, Monday (20 days later)"
       self.assertEqual(actual, expected, 'Expected calling "add_time()" with "8:16 PM", "466:02", "tuesday" to return "6:18 AM, Monday (20 days later)"')
 
-if __name__ == "__main__":
-  unittest.main()
+# if __name__ == "__main__":
+#   unittest.main()
