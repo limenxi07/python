@@ -34,13 +34,13 @@ def add_time(start, duration, day=None):
     return f'{hour}:{min} {counter}'
   elif day is None and days == 1:
     return f'{hour}:{min} {counter} (next day)'
-  elif day is None and days > 0:
+  elif day is None:
     return f'{hour}:{min} {counter} ({days} days later)'
   elif days == 0:
     return f'{hour}:{min} {counter}, {day}'
   elif days == 1:
     return f'{hour}:{min} {counter}, {day} (next day)'
-  elif days > 0:
+  else:
     return f'{hour}:{min} {counter}, {day} ({days} days later)'
 
 
