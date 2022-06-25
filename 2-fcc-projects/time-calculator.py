@@ -18,30 +18,32 @@ def add_time(start, duration, day=None):
       counter = 'AM'
       days += 1
 
-  if day:
+  if day != None:
     day_index = DAYS.index(day.capitalize()) + days
     while day_index > 6:
       day_index -= 7
     day = DAYS[day_index]
     
-
   # output formatting
   if min < 10:
     min = '0' + str(min)
   if hour == 0:
     hour = '12'
 
-  if day is None:
+  if day is None and days == 0:
     return f'{hour}:{min} {counter}'
+  elif day is None and days == 1:
+    return f'{hour}:{min} {counter} (next day)'
+  elif day is None and days > 0:
+    return f'{hour}:{min} {counter} ({days} days later)'
   elif days == 0:
     return f'{hour}:{min} {counter}, {day}'
-  elif days > 0 and days != 1:
-    return f'{hour}:{min} {counter}, {day} ({days} days later)'
   elif days == 1:
-    return f'{hour}:{min} {counter} (next day)'
+    return f'{hour}:{min} {counter}, {day} (next day)'
+  elif days > 0:
+    return f'{hour}:{min} {counter}, {day} ({days} days later)'
 
 
-print(add_time("10:10 PM", "3:30"))
 
 import unittest
 class UnitTests(unittest.TestCase):
@@ -106,5 +108,5 @@ class UnitTests(unittest.TestCase):
       expected = "6:18 AM, Monday (20 days later)"
       self.assertEqual(actual, expected, 'Expected calling "add_time()" with "8:16 PM", "466:02", "tuesday" to return "6:18 AM, Monday (20 days later)"')
 
-# if __name__ == "__main__":
-#   unittest.main()
+if __name__ == "__main__":
+  unittest.main()
