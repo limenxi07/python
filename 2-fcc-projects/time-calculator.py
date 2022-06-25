@@ -1,5 +1,27 @@
-def add_time(start, duration):
-  pass
+def add_time(start, duration, day=None):
+  out = []
+  DAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+  days = 0
+
+  # formatting inputs
+  start_hour = int(start.split(':')[0])
+  start_min = int(start.split(':')[1])
+  dur_hour = int(duration.split(':')[0])
+  dur_min = int(duration.split(':')[1])
+  counter = start.split(' ')[1]
+  
+  # calculations
+
+
+  # calculations with day
+  if day:
+    day_index = DAYS.index(day.capitalize())
+  if days == 1:
+    pass
+  if days > 0:
+    pass
+
+  return out.join('')
 
 
 
