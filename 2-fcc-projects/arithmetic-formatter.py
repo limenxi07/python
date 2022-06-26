@@ -4,7 +4,26 @@ def arithmetic_arranger(problems, show_ans=False):
   if len(problems) > 5:
     return 'Error: Too many problems.'
   
+  for problem in problems:
+    op = problem.split(' ')[1]
+    try:
+      n1 = int(problem.split(' ')[0])
+      n2 = int(problem.split(' ')[2])
+    except ValueError:
+      return 'Error: Numbers must only contain digits.'
 
+    if n1 > 9999 or n2 > 9999:
+      return "Error: Numbers cannot be more than four digits."
+    elif op != '+' or '-':
+      return "Error: Operator must be '+' or '-'."
+    
+    # problem formatting & solving
+    if op == '+':
+      ans = n1 + n2
+    else:
+      ans = n1 - n2
+    
+    
 
   return ''
 
