@@ -44,10 +44,10 @@ def arithmetic_arranger(problems, show_ans=False):
     except IndexError:
       pass
   
+  out = [i.rstrip() for i in out]
   return '\n'.join(out).rstrip()
 
-'    3      988    \n+ 855    +  40    \n-----    -----    \n  858     1028' != 
-'    3      988\n+ 855    +  40\n-----    -----\n  858     1028'
+
 
 import unittest
 class UnitTests(unittest.TestCase):
@@ -103,5 +103,5 @@ class UnitTests(unittest.TestCase):
     self.assertEqual(actual, expected, 'Expected solutions to be correctly displayed in output when calling "arithmetic_arranger()" with five arithmetic problems and a second argument of `True`.')
   
 
-# if __name__ == "__main__":
-#   unittest.main()
+if __name__ == "__main__":
+  unittest.main()
