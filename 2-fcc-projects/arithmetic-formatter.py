@@ -1,4 +1,8 @@
 def arithmetic_arranger(problems, show_ans=False):
+  if show_ans:
+    out = ['', '', '', '']
+  else:
+    out = ['', '', '']
 
   # check for error situations
   if len(problems) > 5:
@@ -9,25 +13,41 @@ def arithmetic_arranger(problems, show_ans=False):
     try:
       n1 = int(problem.split(' ')[0])
       n2 = int(problem.split(' ')[2])
+      sn1 = len(str(n1))
+      sn2 = len(str(n2))
     except ValueError:
       return 'Error: Numbers must only contain digits.'
 
     if n1 > 9999 or n2 > 9999:
       return "Error: Numbers cannot be more than four digits."
-    elif op != '+' or '-':
+    elif op not in '+-':
+      print(op)
       return "Error: Operator must be '+' or '-'."
     
     # problem formatting & solving
     if op == '+':
-      ans = n1 + n2
+      ans = str(n1 + n2)
     else:
-      ans = n1 - n2
+      ans = str(n1 - n2)
     
+    if sn1 > sn2:
+      length = sn1 + 2
+    else:
+      length = sn2 + 2
     
+    out[0] = out[0] + ' ' * (length - sn1) + str(n1) + '    '
+    out[1] = out[1] + op + ' ' * (length - sn2 - 1) + str(n2) + '    '
+    out[2] = out[2] + '-' * length + '    '
+    
+    try:
+      out[3] = out[3] + ' ' * (length - len(ans)) + ans + '    '
+    except IndexError:
+      pass
+  
+  return '\n'.join(out).rstrip()
 
-  return ''
-
-
+'    3      988    \n+ 855    +  40    \n-----    -----    \n  858     1028' != 
+'    3      988\n+ 855    +  40\n-----    -----\n  858     1028'
 
 import unittest
 class UnitTests(unittest.TestCase):
@@ -83,5 +103,5 @@ class UnitTests(unittest.TestCase):
     self.assertEqual(actual, expected, 'Expected solutions to be correctly displayed in output when calling "arithmetic_arranger()" with five arithmetic problems and a second argument of `True`.')
   
 
-if __name__ == "__main__":
-  unittest.main()
+# if __name__ == "__main__":
+#   unittest.main()
