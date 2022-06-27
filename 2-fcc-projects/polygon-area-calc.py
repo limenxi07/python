@@ -4,6 +4,9 @@ class Rectangle:
     self.width = width
     self.height = height
   
+  def __str__(self):
+    return f'Rectangle(width={self.width}, height={self.height})'
+  
   def set_width(self, width):
     self.width = width
   
@@ -20,9 +23,25 @@ class Rectangle:
     return (self.width ** 2 + self.height ** 2) ** .5
 
 
-class Square:
-  pass
+class Square(Rectangle):
 
+  def __init__(self, length):
+    super(Square, self).__init__(length, length)
+  
+  def __str__(self):
+    return f'Square(side={self.width})'
+
+  def set_side(self, side):
+    self.width = side
+    self.height = side
+  
+  def set_width(self, width):
+    self.width = width
+    self.height = width
+  
+  def set_height(self, height):
+    self.height = height
+    self.width = height
 
 
 
