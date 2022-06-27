@@ -10,8 +10,8 @@ class Category:
   def check_funds(self, amount):
     total = 0
     for i in self.ledger:
-      total += i.amount
-    return float(amount) < total
+      total += i['amount']
+    return float(amount) <= total
 
   def withdraw(self, amount, description=''):
     if self.check_funds(float(amount)):
@@ -20,6 +20,8 @@ class Category:
     else:
       return False
   
+  
+
 
 
 def create_spend_chart(categories):
