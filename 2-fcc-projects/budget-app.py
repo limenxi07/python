@@ -45,9 +45,24 @@ class Category:
   
 
 
+def create_spend_chart(list):
+  # data processing
+  categories = []
+  spacing = 1
+  for category in list:
+    spent = 0
+    for i in category.ledger:
+      if i['amount'] < 0:
+        spent += abs(i['amount'])
+    categories.append({'name': category.name, 'spent': spent, 'spacing': spacing})
+    spacing += 3
+  
+  # chart formatting
+  print(categories)
 
-def create_spend_chart(categories):
-  pass
+  # label formatting
+
+
 
 
 
