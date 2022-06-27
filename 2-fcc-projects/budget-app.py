@@ -14,12 +14,25 @@ class Category:
     return float(amount) <= total
 
   def withdraw(self, amount, description=''):
-    if self.check_funds(float(amount)):
+    if self.check_funds(amount):
       self.ledger.append({'amount': -float(amount), 'description': description})
       return True
     else:
       return False
   
+  def get_balance(self):
+    total = 0
+    for i in self.ledger:
+      total += i['amount']
+    return total
+  
+  def transfer(self, amount, category):
+    if self.check_funds(amount):
+      self.withdraw(amount, f'Transfer to {category}')
+      category.deposit(amount, f'Transfer from {self.name}')
+      return True
+    else:
+      return False
   
 
 
