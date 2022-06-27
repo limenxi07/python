@@ -46,23 +46,30 @@ class Category:
 
 
 def create_spend_chart(list):
+  chart = ['Percentage spent by category', '100|', ' 90|', ' 80|', ' 70|', ' 60|', ' 50|', ' 40|', ' 30|', ' 20|', ' 10|', '  0|']
+
   # data processing
   categories = []
-  spacing = 1
   for category in list:
     spent = 0
     for i in category.ledger:
       if i['amount'] < 0:
         spent += abs(i['amount'])
-    categories.append({'name': category.name, 'spent': spent, 'spacing': spacing})
-    spacing += 3
+    categories.append({'name': category.name, 'spent': spent})
+  total = sum(i['spent'] for i in categories)
+  for i in categories:
+    i['percentage'] = round((i['spent']/total) * 10)
   
   # chart formatting
-  print(categories)
+
+
+  print(categories, total)
 
   # label formatting
+  chart.append('    ' + '-' * (len(categories) * 3 + 1))
 
 
+  print('\n'.join(chart))
 
 
 
