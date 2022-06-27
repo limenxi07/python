@@ -1,5 +1,25 @@
 class Category:
-  pass
+
+  def __init__(self, name):
+    self.name = name
+    self.ledger = []
+
+  def deposit(self, amount, description=''):
+    self.ledger.append({'amount': float(amount), 'description': description})
+  
+  def check_funds(self, amount):
+    total = 0
+    for i in self.ledger:
+      total += i.amount
+    return float(amount) < total
+
+  def withdraw(self, amount, description=''):
+    if self.check_funds(float(amount)):
+      self.ledger.append({'amount': -float(amount), 'description': description})
+      return True
+    else:
+      return False
+  
 
 
 def create_spend_chart(categories):
