@@ -3,15 +3,24 @@ class Category:
   def __init__(self, name):
     self.name = name
     self.ledger = []
+  
+  def __str__(self):
+    n = round((30 - len(self.name))/2)
+    history = ''
+    for i in self.ledger:
+      width = max(len(str(j['amount'])) for j in self.ledger) + 23
+      text = i['description'][:23]
+      cost = str(round(i['amount'], 2))[:7]
+      if cost[-3] != '.':
+        cost += '0'
+      history += f"{text}{' ' * (width - len(text) - len(cost))} {cost}\n"
+    return f'{"*" * n}{self.name}{"*" * n}\n{history}Total: {self.get_balance()}'
 
   def deposit(self, amount, description=''):
     self.ledger.append({'amount': float(amount), 'description': description})
   
   def check_funds(self, amount):
-    total = 0
-    for i in self.ledger:
-      total += i['amount']
-    return float(amount) <= total
+    return float(amount) <= self.get_balance()
 
   def withdraw(self, amount, description=''):
     if self.check_funds(amount):
@@ -28,7 +37,7 @@ class Category:
   
   def transfer(self, amount, category):
     if self.check_funds(amount):
-      self.withdraw(amount, f'Transfer to {category}')
+      self.withdraw(amount, f'Transfer to {category.name}')
       category.deposit(amount, f'Transfer from {self.name}')
       return True
     else:
