@@ -1,7 +1,20 @@
 import copy, random
 
 class Hat:
-  pass
+
+  def __init__(self, **kwargs):
+    self.contents = []
+    for key, value in kwargs.items():
+      self.contents += [key] * value
+  
+  def draw(self, balls):
+    if balls > len(self.contents):
+      return self.contents
+    else:
+      drawn = random.sample(self.contents, balls)
+      for i in drawn:
+        self.contents.remove(i)
+      return drawn
 
 
 def experiment(hat, expected_balls, num_balls_drawn, num_experiments):
