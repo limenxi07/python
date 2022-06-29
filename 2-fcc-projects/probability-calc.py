@@ -22,11 +22,10 @@ def experiment(hat, expected_balls, num_balls_drawn, num_experiments):
   req = []
   for key, value in expected_balls.items():
     req += [key] * value
-  req.sort()
-  for i in range(num_experiments):
+  for _ in range(num_experiments):
     hat_copy = copy.copy(hat)
-    drawn = hat_copy.draw(num_balls_drawn).sort()
-    if req in drawn:
+    drawn = hat_copy.draw(num_balls_drawn)
+    if all(ball in drawn for ball in req):
       total += 1
   return total / num_experiments
 
