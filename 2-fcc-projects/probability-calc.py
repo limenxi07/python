@@ -23,9 +23,14 @@ def experiment(hat, expected_balls, num_balls_drawn, num_experiments):
   for key, value in expected_balls.items():
     req += [key] * value
   for _ in range(num_experiments):
-    hat_copy = copy.copy(hat)
+    hat_copy = copy.deepcopy(hat)
     drawn = hat_copy.draw(num_balls_drawn)
-    if all(ball in drawn for ball in req):
+    req_count = 0
+    for i in req: # lengthy code but could not think of how to better handle repeated colours
+      if i in drawn:
+        drawn.remove(i)
+        req_count += 1
+    if req_count == len(req):
       total += 1
   return total / num_experiments
 
